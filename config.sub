@@ -404,6 +404,10 @@ case $1 in
 				basic_machine=moxie-unknown
 				os=moxiebox
 				;;
+			mrisc32)
+				basic_machine=mrisc32-unknown
+				os=
+				;;
 			msdos)
 				basic_machine=i386-pc
 				os=msdos
@@ -1213,6 +1217,7 @@ case $cpu-$vendor in
 			| mmix \
 			| mn10200 | mn10300 \
 			| moxie \
+			| mrisc32 \
 			| mt \
 			| msp430 \
 			| nds32 | nds32le | nds32be \
