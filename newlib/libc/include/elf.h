@@ -343,6 +343,8 @@ typedef struct {
 
 #define EM_ALPHA	0x9026
 
+#define EM_MRISC32	0xc001
+
 #define EV_NONE		0
 #define EV_CURRENT	1
 #define EV_NUM		2
