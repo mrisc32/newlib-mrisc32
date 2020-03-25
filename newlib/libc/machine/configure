@@ -819,6 +819,7 @@ riscv
 mn10200
 mn10300
 moxie
+mrisc32
 msp430
 mt
 nds32
@@ -11920,6 +11921,8 @@ subdirs="$subdirs a29k"
 	mn10300) subdirs="$subdirs mn10300"
  ;;
 	moxie) subdirs="$subdirs moxie"
+ ;;
+	mrisc32) subdirs="$subdirs mrisc32"
  ;;
 	msp430) subdirs="$subdirs msp430"
  ;;
