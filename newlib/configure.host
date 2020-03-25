@@ -260,6 +260,9 @@ case "${host_cpu}" in
   moxie)
 	machine_dir=moxie
         ;;
+  mrisc32)
+	machine_dir=mrisc32
+        ;;
   msp430*)
 	newlib_cflags="${newlib_cflags} -DPREFER_SIZE_OVER_SPEED -DSMALL_MEMORY"
 	newlib_cflags="${newlib_cflags} -ffunction-sections -fdata-sections "
@@ -572,6 +575,9 @@ case "${host}" in
   moxie*)
         sys_dir=
         ;;
+  mrisc32*)
+        sys_dir=
+        ;;
   nios2*)
 	sys_dir=
 	;;
@@ -835,6 +841,9 @@ newlib_cflags="${newlib_cflags} -DCLOCK_PROVIDED -DMALLOC_PROVIDED -DEXIT_PROVID
 	default_newlib_io_long_long="yes"
 	newlib_cflags="${newlib_cflags} -Os -DPREFER_SIZE_OVER_SPEED -DSMALL_MEMORY"
         ;;
+  mrisc32*)
+	syscall_dir=syscalls
+	;;
   nios2*)
 	syscall_dir=
 	newlib_cflags="${newlib_cflags} -DHAVE_RENAME -DHAVE_SYSTEM -DMISSING_SYSCALL_NAMES"
