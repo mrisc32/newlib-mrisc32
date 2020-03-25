@@ -39,6 +39,7 @@ arm                     Nick Clifton            nickc@redhat.com
 bfin			Mike Frysinger		vapier@gentoo.org
 mn10300			Nick Clifton		nickc@redhat.com
 moxie			Anthony Green		green@moxielogic.com
+mrisc32			Marcus Geelnard		m@bitsnbites.eu
 risc-v			Kito Cheng		kito.cheng@gmail.com
 aarch64			Richard Earnshaw	richard.earnshaw@arm.com
 			Marcus Shawcroft	marcus.shawcroft@arm.com
