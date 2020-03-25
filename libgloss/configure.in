@@ -126,6 +126,9 @@ case "${target}" in
   moxie-*-*)
 	AC_CONFIG_SUBDIRS([moxie])
 	;;
+  mrisc32-*-*)
+	AC_CONFIG_SUBDIRS([mrisc32])
+	;;
   microblaze*-*-*)
 	AC_CONFIG_SUBDIRS([microblaze])
 	;;
