@@ -57,6 +57,7 @@ if test -n "${machine_dir}"; then
 	mn10200) AC_CONFIG_SUBDIRS(mn10200) ;;
 	mn10300) AC_CONFIG_SUBDIRS(mn10300) ;;
 	moxie) AC_CONFIG_SUBDIRS(moxie) ;;
+	mrisc32) AC_CONFIG_SUBDIRS(mrisc32) ;;
 	msp430) AC_CONFIG_SUBDIRS(msp430) ;;
 	mt) AC_CONFIG_SUBDIRS(mt) ;;
 	nds32) AC_CONFIG_SUBDIRS(nds32) ;;

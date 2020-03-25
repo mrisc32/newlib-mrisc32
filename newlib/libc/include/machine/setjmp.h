@@ -241,6 +241,13 @@ _BEGIN_STD_C
 #define _JBLEN 10
 #endif
 
+#ifdef __MRISC32__
+/* All callee preserved registers:
+ * s16 - s25, fp, tp, sp, vl, lr (15 scalar regs) */
+#define _JBLEN 15
+#define _JBTYPE unsigned long
+#endif
+
 #ifdef __CRX__
 #define _JBLEN 9
 #endif
