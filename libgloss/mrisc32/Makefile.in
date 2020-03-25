@@ -1,0 +1,114 @@
+# Copyright (c) 2020 Marcus Geelnard
+#
+# The authors hereby grant permission to use, copy, modify, distribute,
+# and license this software and its documentation for any purpose, provided
+# that existing copyright notices are retained in all copies and that this
+# notice is included verbatim in any distributions. No written agreement,
+# license, or royalty fee is required for any of the authorized uses.
+# Modifications to this software may be copyrighted by their authors
+# and need not follow the licensing terms described here, provided that
+# the new terms are clearly indicated on the first page of each file where
+# they apply.
+#
+
+# Makefile for libgloss for the MRISC32 target.
+
+DESTDIR =
+VPATH = @srcdir@ @srcdir@/..
+srcdir = @srcdir@
+objdir = .
+srcroot = $(srcdir)/../..
+objroot = $(objdir)/../..
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+host_alias = @host_alias@
+target_alias = @target_alias@
+
+bindir = @bindir@
+libdir = @libdir@
+tooldir = $(exec_prefix)/$(target_alias)
+
+# Multilib support variables.
+# TOP is used instead of MULTI{BUILD,SRC}TOP.
+MULTIDIRS =
+MULTISUBDIR =
+MULTIDO = true
+MULTICLEAN = true
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+
+SHELL = /bin/sh
+
+CC = @CC@
+
+AS = @AS@
+AR = @AR@
+LD = @LD@
+RANLIB = @RANLIB@
+AR_FLAGS = rc
+
+OBJDUMP = `if [ -f ${objroot}/../binutils/objdump ] ; \
+	then echo ${objroot}/../binutils/objdump ; \
+	else t='$(program_transform_name)'; echo objdump | sed -e $$t ; fi`
+OBJCOPY = `if [ -f ${objroot}/../binutils/objcopy ] ; \
+	then echo ${objroot}/../binutils/objcopy ; \
+	else t='$(program_transform_name)'; echo objcopy | sed -e $$t ; fi`
+
+CRT0 = crt0.o
+
+SIM_BSP = libsim.a
+SIM_OBJS = sim-syscalls.o \
+           dummy-processcalls.o \
+           mrisc32-sbrk.o \
+           mrisc32-gettimeofday.o
+
+DUMMY_BSP = libdummy.a
+DUMMY_OBJS = dummy-syscalls.o \
+             dummy-processcalls.o \
+             dummy-gettimemicros.o \
+             mrisc32-sbrk.o \
+             mrisc32-gettimeofday.o
+
+
+#### Host specific Makefile fragment comes in here.
+@host_makefile_frag@
+
+all: ${CRT0} ${SIM_BSP} ${DUMMY_BSP}
+
+crt0.o: crt0.S
+sim-syscalls.o: sim-syscalls.S
+
+${SIM_BSP}: ${SIM_OBJS}
+	${AR} ${ARFLAGS} $@ ${SIM_OBJS}
+	${RANLIB} $@
+
+${DUMMY_BSP}: ${DUMMY_OBJS}
+	${AR} ${ARFLAGS} $@ ${DUMMY_OBJS}
+	${RANLIB} $@
+
+
+install: $($(CPU)_INSTALL)
+	$(INSTALL_DATA) $(CRT0) $(DESTDIR)$(tooldir)/lib${MULTISUBDIR}/$(CRT0)
+	$(INSTALL_PROGRAM) $(SIM_BSP) $(DESTDIR)$(tooldir)/lib${MULTISUBDIR}/$(SIM_BSP)
+	$(INSTALL_PROGRAM) $(DUMMY_BSP) $(DESTDIR)$(tooldir)/lib${MULTISUBDIR}/$(DUMMY_BSP)
+
+clean mostlyclean:
+	rm -f *.o *.a
+
+distclean maintainer-clean realclean: clean
+	rm -f Makefile config.cache config.log config.status
+
+.PHONY: info dvi doc install-info clean-info
+info doc dvi:
+install-info:
+clean-info:
+
+Makefile: Makefile.in config.status @host_makefile_frag_path@
+	$(SHELL) config.status
+
+config.status: configure
+	$(SHELL) config.status --recheck
