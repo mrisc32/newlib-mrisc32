@@ -1,4 +1,4 @@
-/* crt0.S -- startup file for MRISC32
+/* crt0.S -- startup file for MRISC32.
  * 
  * Copyright (c) 2020  Marcus Geelnard
  *
@@ -13,6 +13,10 @@
  * they apply.
  */
 
+#ifndef STACK_SIZE
+#define STACK_SIZE 4096
+#endif
+
 	.file	"crt0.S"
 
 	.globl	_start
@@ -20,11 +24,14 @@
 	.p2align 2
 	.type	_start,@function
 _start:
-	; Initialize the stack.
-	ldi	sp, #__end
-	add	sp, sp, #4096
+	; We use sbrk() to allocate a stack on the heap. To call sbrk we set
+	; up an initial minimal temporary stack.
+	ldi	s1, #STACK_SIZE
+	ldi	sp, #_end+128	; Temporary stack, just for calling sbrk.
+	call	sbrk@pc
+	mov	sp, s1
 
-	; zero the bss area
+	; Clear the bss area,
 	ldi	s1, #__bss_start
 	ldi	s2, #__bss_end
 	sub	s2, s2, s1
@@ -43,9 +50,9 @@ _start:
 	call	main@pc
 
 	; Call exit().
-	;call	exit@pc
+	call	exit@pc
 
-	; Loop forever (if we ever get here).
+	; Stop (loop forever) if we ever get here.
 1:	b	1b
 
 	.size	_start,.-_start

@@ -60,16 +60,29 @@ OBJCOPY = `if [ -f ${objroot}/../binutils/objcopy ] ; \
 
 CRT0 = crt0.o
 
+DUMMY_BSP = libdummy.a
+DUMMY_OBJS = dummy-syscalls.o \
+             mrisc32-exit.o \
+             mrisc32-read.o \
+             mrisc32-sbrk.o \
+             mrisc32-write.o
+
+
 #### Host specific Makefile fragment comes in here.
 @host_makefile_frag@
 
-all: ${CRT0}
+all: ${CRT0} ${DUMMY_BSP}
 
 crt0.o: crt0.S
+
+${DUMMY_BSP}: ${DUMMY_OBJS}
+	${AR} ${ARFLAGS} $@ ${DUMMY_OBJS}
+	${RANLIB} $@
 
 
 install: $($(CPU)_INSTALL)
 	$(INSTALL_DATA) $(CRT0) $(DESTDIR)$(tooldir)/lib${MULTISUBDIR}/$(CRT0)
+	$(INSTALL_PROGRAM) $(DUMMY_BSP) $(DESTDIR)$(tooldir)/lib${MULTISUBDIR}/$(DUMMY_BSP)
 
 clean mostlyclean:
 	rm -f *.o *.a
